@@ -335,45 +335,112 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Slider
     const slides = document.querySelectorAll('.offer__slide'),
-        sliderBtnPrev = document.querySelector('.offer__slider-prev'),
-        sliderBtnNext = document.querySelector('.offer__slider-next'),
-        sliderCounterCurrent = document.querySelector('#current'),
-        sliderCounterTotal = document.querySelector('#total');
-    let slideIndex = 1;
+        prev = document.querySelector('.offer__slider-prev'),
+        next = document.querySelector('.offer__slider-next'),
+        current = document.querySelector('#current'),
+        total = document.querySelector('#total'),
+        slideWrapper = document.querySelector('.offer__slider-wrapper'),
+        slidesField = document.querySelector('.offer__slider-inner'),
+        width = window.getComputedStyle(slideWrapper).width;
 
-    showSlide(slideIndex);
+    let slideIndex = 1;
+    let offset = 0;
 
     if (slides.length < 10) {
-        sliderCounterTotal.textContent = `0${slides.length}`
+        total.textContent = `0${slides.length}`;
+        current.textContent = `0${slideIndex}`;
     } else {
-        sliderCounterTotal.textContent = slides.length
+        total.textContent = slides.length;
+        current.textContent = slideIndex;
     }
 
-    function showSlide(n) {
-        if(n > slides.length) {
-            slideIndex = 1
-        }else if (n < 1) {
-            slideIndex = slides.length
+    slidesField.style.width = 100 * slides.length + '%';
+    slidesField.style.display = 'flex';
+    slidesField.style.transition = '0,5s all';
+    slideWrapper.style.overflow = 'hidden';
+
+
+    slides.forEach(slide => {
+        slide.style.width = width;
+    })
+
+    next.addEventListener('click', () => {
+        if(offset == +width.slice(0, width.length -2) * (slides.length - 1)) {
+            offset = 0;
+        } else {
+            offset += +width.slice(0, width.length -2);
         }
 
-        slides.forEach(slide => {
-            slide.classList.add('hide');
-            slide.classList.remove('show');
-        })
+        slidesField.style.transform = `translateX(-${offset}px)`;
 
-        slides[slideIndex-1].classList.add('show');
+        if(slideIndex == slides.length) {
+            slideIndex = 1;
+        }else {
+            slideIndex++
+        }
 
         if (slideIndex < 10) {
-            sliderCounterCurrent.textContent = `0${slideIndex}`
+            current.textContent = `0${slideIndex}`;
         } else {
-            sliderCounterCurrent.textContent = slideIndex
+            current.textContent = slideIndex;
         }
-    }
+    })
 
-    function plusSlides(n) {
-        showSlide(slideIndex += n);
-    }
+    prev.addEventListener('click', () => {
+        if(offset == 0) {
+            offset = +width.slice(0, width.length -2) * (slides.length - 1);
+        } else {
+            offset -= +width.slice(0, width.length -2);
+        }
 
-    sliderBtnPrev.addEventListener('click', () => plusSlides(-1));
-    sliderBtnNext.addEventListener('click', () => plusSlides(1));
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if(slideIndex == 1) {
+            slideIndex = slides.length;
+        }else {
+            slideIndex--
+        }
+
+        if (slideIndex < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
+    })
+
+    // showSlide(slideIndex);
+    //
+    // if (slides.length < 10) {
+    //     sliderCounterTotal.textContent = `0${slides.length}`
+    // } else {
+    //     sliderCounterTotal.textContent = slides.length
+    // }
+    //
+    // function showSlide(n) {
+    //     if(n > slides.length) {
+    //         slideIndex = 1
+    //     }else if (n < 1) {
+    //         slideIndex = slides.length
+    //     }
+    //
+    //     slides.forEach(slide => {
+    //         slide.classList.add('hide');
+    //         slide.classList.remove('show');
+    //     })
+    //
+    //     slides[slideIndex-1].classList.add('show');
+    //
+    //     if (slideIndex < 10) {
+    //         sliderCounterCurrent.textContent = `0${slideIndex}`
+    //     } else {
+    //         sliderCounterCurrent.textContent = slideIndex
+    //     }
+    // }
+    //
+    // function plusSlides(n) {
+    //     showSlide(slideIndex += n);
+    // }
+    //
+    // sliderBtnPrev.addEventListener('click', () => plusSlides(-1));
+    // sliderBtnNext.addEventListener('click', () => plusSlides(1));
 })
