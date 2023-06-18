@@ -333,4 +333,47 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000)
     }
 
+    // Slider
+    const slides = document.querySelectorAll('.offer__slide'),
+        sliderBtnPrev = document.querySelector('.offer__slider-prev'),
+        sliderBtnNext = document.querySelector('.offer__slider-next'),
+        sliderCounterCurrent = document.querySelector('#current'),
+        sliderCounterTotal = document.querySelector('#total');
+    let slideIndex = 1;
+
+    showSlide(slideIndex);
+
+    if (slides.length < 10) {
+        sliderCounterTotal.textContent = `0${slides.length}`
+    } else {
+        sliderCounterTotal.textContent = slides.length
+    }
+
+    function showSlide(n) {
+        if(n > slides.length) {
+            slideIndex = 1
+        }else if (n < 1) {
+            slideIndex = slides.length
+        }
+
+        slides.forEach(slide => {
+            slide.classList.add('hide');
+            slide.classList.remove('show');
+        })
+
+        slides[slideIndex-1].classList.add('show');
+
+        if (slideIndex < 10) {
+            sliderCounterCurrent.textContent = `0${slideIndex}`
+        } else {
+            sliderCounterCurrent.textContent = slideIndex
+        }
+    }
+
+    function plusSlides(n) {
+        showSlide(slideIndex += n);
+    }
+
+    sliderBtnPrev.addEventListener('click', () => plusSlides(-1));
+    sliderBtnNext.addEventListener('click', () => plusSlides(1));
 })
