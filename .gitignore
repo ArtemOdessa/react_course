@@ -24,16 +24,16 @@ dist/
 
 # Ignore build files
 #*.js
-*.jsx
-*.ts
-*.tsx
+#*.jsx
+#*.ts
+#*.tsx
 
 # Ignore source maps
 *.map
 
 # Ignore generated type declaration files
-*.d.ts
+#*.d.ts
 
 # Ignore configuration files
-tsconfig.json
-tsconfig.*.json
+#tsconfig.json
+#tsconfig.*.json
